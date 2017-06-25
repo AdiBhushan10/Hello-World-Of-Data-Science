@@ -1,0 +1,56 @@
+'''A Code Snippet to do Forward Propagation for a neural network with 2 hidden layers.
+
+Assumptions:
+1. A Hidden Layer has 2 nodes. Since we have 2 Hidden layers hence total nodes we will be working on are 4 namely (node_11,node_12) and (node_21,node_22)
+2. Weights are pre-defined and are named as (weight_11,weight_12),(weight_21,weight_22) and last weights as 'final'.
+3. Use of RelU Activation function which returns the same output as input if input is positive else value 0
+
+Goal:
+To generate a prediction Value from our model with 2 hidden nodes using pre-defined weights '''
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+import numpy as np
+
+# Defining RelU Activation Function
+def relu(x):
+    output = max(x,0)
+    return(output)
+    
+# Defining our Neural Network Model which returns a Prediction Value as an Output
+def predict_network_model(input_data,weights):
+    # 1st node in the 1st hidden layer
+    node_11_input = sum((input_data*weights['node_11']))
+    node_11_output = relu(node_11_input)
+
+    # 2nd node in the 1st hidden layer
+    node_12_input = sum((input_data * weights['node_12']))
+    node_12_output = relu(node_12_input)
+
+    # Print 1st Hidden Layer Node Values
+    hidden_1 = np.array([node_11_output, node_12_output])
+    print ("Hidden Layer 1 values:"+ str(hidden_1))   
+    
+    # 1st node in the 2nd hidden layer
+    node_21_input = sum((hidden_1 * weights['node_21']))
+    node_21_output = relu(node_21_input)
+
+    # 2nd node in the 2nd hidden layer
+    node_22_input = sum((hidden_1 * weights['node_22']))
+    node_22_output =  relu(node_22_input)
+
+    # Print 2nd Hidden Layer Node Values
+    hidden_2 = np.array([node_21_output, node_22_output])
+    print ("Hidden Layer 2 values:"+ str(hidden_2))   
+    
+    # Calculate model output: model_output
+    model_output = sum((hidden_2*weights['final']))
+    
+    # Return model_output
+    return(model_output)
+
+# Pre-defined Input data and Weights
+input_data = np.array([1,2])
+weights = {'node_11':np.array([3,3]),'node_12':np.array([1,5]),'node_21':np.array([1,1]),'node_22':np.array([1,1]),'final':np.array([2,-1])}
+
+output = predict_network_model(input_data,weights)
+print("Final Prediction Value:"+'\t'+str(output))   #Str to convert and concatenate output with string literals
