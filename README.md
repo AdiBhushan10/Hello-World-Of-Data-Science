@@ -1,3 +1,3 @@
 # Hello-World-Of-Data-Science
-I'm a hobyist with keen interest in Data Science. 
-Here to have some fun with short Data Science projects which I would like to share with all.
+I'm a hobyist with keen interest in Data Science, AI and Machine Learning using Python(2.x/3.x) 
+Here to have fun with short Data Science projects/code snippets in Python, which I would like to share with all.
