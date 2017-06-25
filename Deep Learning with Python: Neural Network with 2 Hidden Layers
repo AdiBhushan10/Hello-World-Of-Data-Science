@@ -54,3 +54,10 @@ weights = {'node_11':np.array([3,3]),'node_12':np.array([1,5]),'node_21':np.arra
 
 output = predict_network_model(input_data,weights)
 print("Final Prediction Value:"+'\t'+str(output))   #Str to convert and concatenate output with string literals
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+Output is the following:
+
+Hidden Layer 1 values:[ 9 11]                                                                                                                                                   
+Hidden Layer 2 values:[20 20]                                                                                                                                                   
+Final Prediction Value: 20
