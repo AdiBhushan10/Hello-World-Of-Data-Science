@@ -6,7 +6,7 @@ Assumptions:
 3. Use of RelU Activation function which returns the same output as input if input is positive else value 0
 
 Goal:
-To generate a prediction Value from our model with 2 hidden nodes using pre-defined weights '''
+To generate a prediction Value from our model with 2 hidden layers using pre-defined weights '''
 -----------------------------------------------------------------------------------------------------------------------------------------
 
 import numpy as np
