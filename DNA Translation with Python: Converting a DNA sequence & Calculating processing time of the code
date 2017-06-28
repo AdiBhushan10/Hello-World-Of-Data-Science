@@ -7,7 +7,7 @@ Assumptions:
 2. In nature, the conversion process inside all living beings follow: DNA -> RNA -> protein(amino acid sequence)
 3. The DNA code sample is taken as an input to our program and is stored seperately in file 'dna.txt' in our python directory.
    (We can check our default python directory by typing command pwd in IPython shell)
-4. Use of read_input function which cleans the DNA sequence text file to remove special characters
+4. Use of time.clock() from the time liberary to store time taken
 
 Goal:
 To convert/translate DNA sequence to protein sequence basis a mapping table provided by NCBI '''
