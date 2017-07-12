@@ -1,0 +1,69 @@
+'''A Code Snippet to perform human face detection on input image using OpenCV and Python.
+
+Assumptions:
+1. Image used as input should be a selfie or face looking at the camera with human faces those are unmasked or without glasses.
+2. Basic knowledge of OpenCV methods, functions, cv2 package etc.
+3. Use of detectMultiScale(image, scaleFactor, minNeighbors) function which returns a list of positions of said face in the form “Rect(x,y,w,h)" on successful face 
+   detection, if not, then returns “None”.
+
+Pre-requisites/Dependencies:
+1. OpenCV 3.2.0 should be installed wth your Python 3.x
+2. As the LBP classifier is pre-trained in OpenCV, their learned knowledge files also come bundled with OpenCV opencv/data/. 
+   Copy the file " lbpcascade_frontalface.xml " from there or google search if absent and paste it in your local PycharmProjects folder
+
+Goal:
+To detect and highlight human faces in an Image using LBP Classifier and calculate time taken by machine for face detection'''
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+#OpenCV library
+import cv2
+import matplotlib.pyplot as plt
+import time
+
+#Function to convert Image to grey color
+def convertToRGB(img):
+    return cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+
+#Function that detects image of a human face (Note: Faces that are Unmasked/No glasses on)
+def detect_faces(f_cascade, colored_img, scaleFactor=1.1):
+    # Create copy of the Image
+    img_copy = colored_img.copy()
+    # convert the test image to gray image as opencv face detector expects gray images
+    gray = convertToRGB(img_copy) #cv2.cvtColor(img_copy, cv2.COLOR_BGR2GRAY)
+    # To detect multiscale images(as some images may be closer to camera than others)
+    faces = f_cascade.detectMultiScale(gray, scaleFactor=scaleFactor, minNeighbors=5);
+    # go over list of faces and draw them as rectangles on original colored img
+    for (x, y, w, h) in faces:
+        cv2.rectangle(img_copy, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    return img_copy
+
+# Human Face Detection using LBG CLASSIFIER
+# Load cascade classifier training file for lbpcascade
+lbp_classifier = cv2.CascadeClassifier('lbpcascade_frontalface.xml')
+# Download this file from google if unavailable on local drive
+
+# load Input image
+Input_img = cv2.imread('Img1.jpg')     # Test Images stored in local drive's PyharmProjects folder
+gray_img = cv2.cvtColor(Input_img, cv2.COLOR_BGR2GRAY)  # Its a standard requirement of OpenCV to convert images into grey scale
+plt.imshow(gray_img, cmap='gray')
+# Display Input image
+plt.show()
+
+# Call function to detect faces
+faces_detected_img = detect_faces(lbp_classifier, Input_img)
+
+# Convert image to RGB(Original colors) and show image
+plt.imshow(convertToRGB(faces_detected_img))
+plt.show()
+
+# Processing Time Calculation
+t1 = time.time()
+lbp_detected_img = detect_faces(lbp_classifier, Input_img)
+# note time after human face detection
+t2 = time.time()
+# print the time difference
+dt2 = t2 - t1
+print('Time taken to process Input image(in sec): ' + str(dt2))
+
+# Display detected human faces
+plt.show()
