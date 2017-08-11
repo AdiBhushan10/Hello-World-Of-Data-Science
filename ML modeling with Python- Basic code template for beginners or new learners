@@ -1,0 +1,65 @@
+'''A Code template for Machine Learning Modeling for new learners or beginners.
+
+Assumptions:
+1. A given .csv file containing a large dataset having one target column and multiple feature columns.
+2. Basic theoretical knowledge on types of classifiers to use for ML modeling
+
+Goal:
+Python code to showcase different types of classifiers in order to build a predictive ML model to solve a given problem '''
+-----------------------------------------------------------------------------------------------------------------------------------------
+
+import pandas as pd
+from sklearn.cross_validation import train_test_split
+
+df = pd.read_csv("data_target_features.csv")   # Assuming our dataset.csv file with target and feature columns has this filename  
+X= df.drop("<target_column>", axis=1)
+y= df["<target_column>"]
+
+''' train_test_split splits arrays or matrices into random train and test subsets which means that everytime you run it without specifying 
+random_state, you will get a different result, so lets use 101 for our model'''
+
+X_train, X_test, y_train, y_test = train_test_split(X,y,test_size=0.33,random_state =101) 
+
+''' 0.33 or 33% represent the proportion of the dataset to include in the test split. 
+Also, as in this case, If train_size parameter value is None, the value is automatically set to the complement of the test size i.e. 0.77'''
+
+# Now we need to choose classifier from sklearn library based on the problem for which we need to create our Machine Learning Model
+
+# 1. Tree Methods
+from sklearn.tree import DecisionTreeClassifier
+dtree = DecisionTreeClassifier()     # to instantiate our classifier
+dtree.fit(X_train,y_train)
+predictions = dtree.predict(X_test)
+
+OR
+
+# 2. Ensemble Methods
+from sklearn.ensemble import RandomForestClassifier
+rfc = RandomForestClassifier(n_estimators = 200)     # to instantiate our classifier with,lets say, 200 estimators
+rfc.fit(X_train,y_train)
+predictions = rfc.predict(X_test)
+
+OR
+
+# 3. Neighbors Methods
+from sklearn.neighbors import KNeighborsClassifier
+knn = KNeighborsClassifier(n_neighbors = 1)     # to instantiate our classifier with k = 1 , we can choose more than one neibhors as well
+knn.fit(X_train,y_train)
+predictions = knn.predict(X_test)
+
+OR
+
+# 4. SVM Methods
+from sklearn.svm import SVC
+svm_model = SVC()     # to instantiate our Support Vector Machine Model
+svm_model.fit(X_train,y_train)
+predictions = svm.model.predict(X_test)
+
+
+'''Last section of this code template is to calculate the performance & accuracy of the classifier 
+   in our model on a given set of test data '''
+
+from sklearn.metrics import classification_report,confusion_matrix
+print(confusion_matrix(y_test, predictions))        # predictions parameter taken from one of the above models we choose 
+print('\n')
+print(classification_report(y_test, predictions))   # accuracy represented by f1-score in output
