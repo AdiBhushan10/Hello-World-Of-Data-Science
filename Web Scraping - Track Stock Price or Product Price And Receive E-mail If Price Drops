@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+"""
+Web Scrapping Project - Track price of a product or a stock from website, and check if price drops. 
+If so, send an e-mail notification to indicate price fall
+"""
+import requests
+from bs4 import BeautifulSoup
+import smtplib
+
+URL = 'https://web.tmxmoney.com/quote.php?qm_symbol=BNS'
+
+def send_email():
+    server = smtplib.SMTP('smtp.gmail.com',587) 
+    '''587 is the official GMAIL SMTP port number
+    '''
+    server.ehlo()
+    server.starttls()
+    '''ehlo is to enable this program establish connection with email website
+       starttls is used to encrypt our connection
+    '''
+    server.ehlo()
+    
+    server.login('aditya.bhushan10@gmail.com','yttryfsfmbnvnzca')
+   
+    msg = f"Subject: 'Price Fell Down'\n\n 'Price reduced, check: https://web.tmxmoney.com/quote.php?qm_symbol=BNS" 
+    server.sendmail('aditya.bhushan10@gmail.com','aditya.bhushan10@gmail.com',msg)
+    print('EMAIL HAS BEEN SENT')
+    server.quit()
+   
+
+headers = {"User-Agent":'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'}
+
+''' A user agent is a text that has info about your browser and operating system - any website we access, our user agent takes this infor to the website
+'''
+headers1 = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.130 Safari/537.36'
+
+webpage = requests.get(URL, headers = headers)
+
+soup = BeautifulSoup(webpage.content, 'lxml')
+
+'''HTML parsing is basically: taking in HTML code and extracting relevant information like the title of the page, paragraphs in the page, headings in the page, links, bold text etc.
+'''
+
+myprice = soup.find(class_='price').get_text()
+myprice= myprice[-8:].strip('\nRT')
+
+
+'''myprice = soup.find('class',attrs = {'class': 'class'}).get_text()
+'''
+'''strip func removes leading and trainling spaces from text
+'''
+
+print(myprice)
+
+converted_myprice = float(myprice)
+print(converted_myprice)
+
+if converted_myprice > 70.00:
+    send_email()
+    
+
+
+
+
+
+
