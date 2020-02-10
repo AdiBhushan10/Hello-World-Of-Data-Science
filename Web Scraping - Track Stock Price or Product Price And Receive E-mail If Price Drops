@@ -1,8 +1,10 @@
-# -*- coding: utf-8 -*-
 """
 Web Scrapping Project - Track price of a product or a stock from website, and check if price drops. 
-If so, send an e-mail notification to indicate price fall
-"""
+If so, send an e-mail notification to indicate price fall.
+
+Goal: Track price and send notification e-mail using python
+'''
+
 import requests
 from bs4 import BeautifulSoup
 import smtplib
