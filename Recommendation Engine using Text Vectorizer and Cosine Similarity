@@ -1,0 +1,43 @@
+import pandas as pd
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+import seaborn as sns   #To check heat map for any missing values
+
+df_mov1 = pd.read_csv('D:/Python Projects Databases/tmdb-movie-metadata/tmdb_5000_movies.csv')
+df_mov2 = pd.read_csv('D:/Python Projects Databases/tmdb-movie-metadata/tmdb_5000_credits.csv')
+
+'''Merge into a data frame - join using common column - to get a new data frame with required information/columns
+we can use merge or Join i.e. outer left join, outer right join, inner join'''
+#df_merge1 = pd.merge(df_mov2,df_mov1, how='left', on= 'title')  #merge keepimg all columns of df_mov2 & df_mov1
+df_merge1 = pd.merge(df_mov2,df_mov1[['title','genres','overview']], how='left', on= 'title') #merge keeping all columns of df_mov2 but only 2 columns of df_mov1
+
+#print(df_merge1.info())  #To cross check what columns are there and the correpsonding data type: int, float or object
+
+sns.heatmap(df_merge1.isnull(),yticklabels=False,cbar=False,cmap='viridis')
+#heatmap shows missing values, y labels absent, cbar (intensity) not required, viridis is a map bkground color
+# Alternative way: print(df_merge1.isnull().sum())  # To check if any column has missing values that need to be treated
+
+# Only overview column has missing values that needs to be converted to nan values
+df_merge1['overview'] = df_merge1['overview'].fillna('nan')
+
+# Using CountVectorizer
+count = CountVectorizer()
+count_matrix = count.fit_transform(df_merge1['overview'])
+
+print(count_matrix.shape)  # to check number of rows and columns in the matrix
+
+indices = pd.Series(df_merge1['title'])
+
+def recommend(title, cosine_sim = cosine_similarity(count_matrix, count_matrix)):
+    recommended_movies = []
+    idx = indices[indices == title].index[0]
+    score_series = pd.Series(cosine_sim[idx]).sort_values(ascending = False)
+    top_10_indices = list(score_series.iloc[1:11].index)
+    
+    for i in top_10_indices:
+        recommended_movies.append(list(df_merge1['title'])[i])
+        
+    return print(recommended_movies)
+
+last_watched = 
+recommend('Transformers')
